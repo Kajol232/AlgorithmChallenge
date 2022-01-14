@@ -7,13 +7,14 @@ namespace Challenge1
 {
     public class BusRoute
     {
-        public int FindRoutes(int[][] routes, int source, int target)
+        public static int FindRoutes(int[][] routes, int source, int target)
         {
             int min = 0;
-            ArrayList list = FindIndex(routes, source);
+            ArrayList list = FindIndex(routes, source, 0);
             foreach(int s in list)
             {
-                Node n = DrawTree(routes, new Node(0), source);
+                Node n = new Node(source);
+                DrawTree(routes, n, n.key, 0);
                 int path = Transverse(n, target);
                 if(path < min)
                 {
@@ -25,48 +26,53 @@ namespace Challenge1
 
         }
 
-        public int Transverse(Node n, int target)
+        private static int Transverse(Node n, int target)
         {
-
+            return 0;
 
         }
-        public Node DrawTree(int[][] routes,Node n, int source)
+        private static void DrawTree(int[][] routes,Node n, int source, int row)
         {
-            ArrayList list = FindIndex(routes,source);
+            ArrayList list = FindIndex(routes,source, row);
 
             foreach(int s in list)
             {
                 int index = Array.IndexOf(routes[s], source);
-                n.key = (routes[s][index]);
-                for(int i = 0; i < routes[s].Length; i++)
+                if(index !< 0)
                 {
-                    if(routes[s][i] != n.key)
+                    n.key = routes[s][index];
+                    Console.WriteLine(n.ToString());
+                    for (int i = 0; i < routes[s].Length; i++)
                     {
-                        if (n.left == null)
+                        if (routes[s][i] != n.key)
                         {
+                            if (n.left == null)
+                            {
 
-                            n.left = new Node(routes[s][i]);
-                            DrawTree(routes, n.left, n.left.key);
-                        }
-                        else
-                        {
-                            n.right = new Node(routes[s][i]);
-                            DrawTree(routes, n.right, n.right.key);
+                                n.left = new Node(routes[s][i]);
+                                DrawTree(routes, n.left, n.left.key, 2);
+                            }
+                            else
+                            {
+                                n.right = new Node(routes[s][i]);
+                                DrawTree(routes, n.right, n.right.key, 2);
+                            }
+
                         }
 
                     }
-                    
+
                 }
+                
+               
 
             }
-
-            return n;
         }
-        private ArrayList FindIndex(int[][] routes, int source)
+        private static ArrayList FindIndex(int[][] routes, int source, int row)
         {
             ArrayList sourceIndexList = new ArrayList();
             //ArrayList targetIndexList = new ArrayList();
-            for (int i = 0; i < routes.Length; i++)
+            for (int i = row; i < routes.Length; i++)
             {
                 for (int j = 0; j < routes[i].Length; j++)
                 {

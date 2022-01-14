@@ -9,11 +9,18 @@ namespace Challenge1
         public static int CheckLongest(string s)
         {
             int max = 0;
-            for(int i = 0; i < s.Length; i++)
+            for(int i = 1; i <= s.Length; i++)
             {
-                for (int j = 2; j + i < s.Length; j++)
+                for (int j = 0; j <= s.Length - i; j++)
                 {
-                    String newString = s.Substring(i, j);
+                    int len = j + i - 1;
+                    String newString = "";
+                    for (int k = j; k <= len; k++)
+                    {
+                        newString += s[k];
+
+                    }
+
                     if (IsValid(newString))
                     {
                         if (newString.Length > max)
@@ -21,6 +28,7 @@ namespace Challenge1
                             max = newString.Length;
                         }
                     }
+
 
                 }
                 
